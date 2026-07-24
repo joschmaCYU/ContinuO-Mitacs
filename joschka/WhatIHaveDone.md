@@ -154,7 +154,7 @@ I have one leg that is up I don't know why.
 I have to tune tow legs front and back because robot is mirror for this I can make the robot go up and down and then for haa make one leg move at a time on the side but other legs a bit out so that the robot doesn't fall.
 
 # Day 15 (20/07)
-I made `stance_tuner.py` I could tune my pid for the legs `p: 200.0  i: 0.0  d: 4.0` for the shoulders (haa) : `p: 250.0  i: 0.0  d: 1.0`, for afe `p: 150.0  i: 0.0  d: 1.0`. 
+I made `stance_tuner.py` I could tune my pid for the legs. 
 See *HL_HFE_KFE.png*, *FL_HFE_KFE.png*, *HL_AFE.png* and *HL_HAA.png*.
 But the robot still falls when I tell him to go forward. I use the same urdf that was used for the rl.
 **I undestood I gave the wrong start positions.**
@@ -179,3 +179,13 @@ I broke in multiple piceses the urdf:
 - `sensors.xacro`: link and joints for the lidar and imu
 - `transmissions.xacro`: for the transmissions that makes the link between the URDF joints and the PIDs
 - `legs.xacro`: All the legs stuff (inertial, visual, collision, link, joint)
+I switch to florent package it's kindof working but the robot isn't walking
+
+# Day 19 (27/07)
+Let's find why he isn't walking.
+From what I understand `gazebo_ros_control` is applying PIDs. I am retuning the PIDs for each joint. I have an RMSE very small on almost all joints around 0.01. On a static movement.
+The legs move very quickly when the robot touches the ground. I try adding a smooth value but it did not fix. So I looked at the action that the rl policy gave me and they seem good. 
+I have a big gap between target send and real position
+
+
+I need to try on isaac sim if I have the same issue. Because I know my policy is good.

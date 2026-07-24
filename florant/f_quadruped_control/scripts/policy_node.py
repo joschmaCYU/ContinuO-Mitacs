@@ -90,26 +90,6 @@ class PolicyNodeReal:
             "~joint_order",
             [
                 "FL_HAA",
-                "FL_HFE",
-                "FL_KFE",
-                "FR_HAA",
-                "FR_HFE",
-                "FR_KFE",
-                "HL_HAA",
-                "HL_HFE",
-                "HL_KFE",
-                "HL_AFE",
-                "HR_HAA",
-                "HR_HFE",
-                "HR_KFE",
-                "HR_AFE",
-            ],
-        )
-
-        self.joint_order_obs = rospy.get_param(
-            "~joint_order_obs",
-            [
-                "FL_HAA",
                 "FR_HAA",
                 "HL_HAA",
                 "HR_HAA",
@@ -146,14 +126,17 @@ class PolicyNodeReal:
             },
         )
 
+        self.last_q_cmd_smoothed = self.base_vector()
+
         self.rate_hz = float(rospy.get_param("~rate", 50.0))
         self.output_topic = rospy.get_param("~output_topic", "/joint_targets_rl")
         self.episode_len_s = float(rospy.get_param("~episode_len_s", 6.0))
         self.action_order_model = rospy.get_param(
-            "~action_order_model", list(self.joint_order_obs)
+            "~action_order_model", list(self.joint_order)
         )
 
         self.latest_imu = None
+        self.latest_joint_state = None
         self.latest_cmd = np.array([0.2, 0.0, 0.0, 0.0], dtype=np.float32)
         self.latest_height_scan_raw = np.zeros(187, dtype=np.float32)
         self.latest_ceiling_height_scan_raw = np.zeros(187, dtype=np.float32)
@@ -302,7 +285,7 @@ class PolicyNodeReal:
             cfg["action_mode"] = cfg.get("action_mode", "delta").strip().lower()
             cfg["action_scale"] = float(cfg.get("action_scale", 0.5))
             cfg["obs_dim"] = int(cfg["obs_dim"])
-            cfg["joint_order_obs"] = cfg.get("joint_order_obs", self.joint_order_obs)
+            cfg["joint_order"] = cfg.get("joint_order", self.joint_order)
             cfg["action_order_model"] = cfg.get(
                 "action_order_model", self.action_order_model
             )
@@ -328,7 +311,7 @@ class PolicyNodeReal:
 
             self.active_policy_id = policy_name
             self.active_policy = self.policies[policy_name]
-            self.joint_order_obs = self.active_policy["joint_order_obs"]
+            self.joint_order = self.active_policy["joint_order"]
             self.action_order_model = self.active_policy["action_order_model"]
             self.model_q0 = self.active_policy["model_q0"]
             self.last_action_model = np.zeros(
@@ -427,8 +410,8 @@ class PolicyNodeReal:
             "base_ang_vel": ["x", "y", "z"],
             "projected_gravity": ["x", "y", "z"],
             "pose_commands": ["cmd_0", "cmd_1", "cmd_2", "cmd_3"],
-            "joint_pos": self.joint_order_obs,
-            "joint_vel": self.joint_order_obs,
+            "joint_pos": self.joint_order,
+            "joint_vel": self.joint_order,
             "actions": self.action_order_model,
             "height_scan": [
                 f"lidar_{i}"
@@ -470,8 +453,8 @@ class PolicyNodeReal:
             header += self.get_obs_column_names()
             header += ["action_IA_" + n for n in self.action_order_model]
             header += ["target_envoyee_" + n for n in self.joint_order]
-            header += ["position_reelle_" + n for n in self.joint_order_obs]
-            header += ["vitesse_reelle_" + n for n in self.joint_order_obs]
+            header += ["position_reelle_" + n for n in self.joint_order]
+            header += ["vitesse_reelle_" + n for n in self.joint_order]
 
             self.obs_csv_writer.writerow(header)
             self.obs_csv_header_written = True
@@ -568,7 +551,7 @@ class PolicyNodeReal:
             return q, dq
 
         idx = {name: i for i, name in enumerate(self.latest_joint_state.name)}
-        for k, name in enumerate(self.joint_order_obs):
+        for k, name in enumerate(self.joint_order):
             i = idx.get(name)
             if i is None:
                 continue
@@ -628,37 +611,39 @@ class PolicyNodeReal:
         rate = rospy.Rate(self.rate_hz)
 
         while not rospy.is_shutdown():
-            try:
-                with self.policy_lock:
-                    obs = self.build_obs()
+            with self.policy_lock:
+                obs = self.build_obs()
 
-                    if not self.obs_ready(obs):
-                        rate.sleep()
-                        continue
+                if not self.obs_ready(obs):
+                    rate.sleep()
+                    continue
 
-                    if not self.policy_started:
-                        self.episode_start = rospy.Time.now()
-                        self.policy_started = True
+                if not self.policy_started:
+                    self.episode_start = rospy.Time.now()
+                    self.policy_started = True
 
-                    obs = self.inject_time_remaining(obs)
-                    action_model = self.run_policy(obs)
-                    self.last_action_model = action_model.copy()
+                obs = self.inject_time_remaining(obs)
+                action_model = self.run_policy(obs)
+                self.last_action_model = action_model.copy()
 
-                    action_ctrl = self.map_model_action_to_control(action_model)
-                    action_mode = self.active_policy["action_mode"]
-                    action_scale = self.active_policy["action_scale"]
-                    q0 = self.base_vector()
+                action_mode = self.active_policy["action_mode"]
+                action_scale = self.active_policy["action_scale"]
+                q0 = self.base_vector()
 
-                if action_mode == "delta":
-                    q_cmd = (action_scale * action_ctrl) + q0
-                elif action_mode == "absolute":
-                    q_cmd = action_ctrl
+            action_ctrl = self.map_model_action_to_control(action_model)
+            q_cmd_raw = (action_scale * action_ctrl) + q0
+            alpha = 0.5
+            q_cmd_smooth = alpha * q_cmd_raw + (1.0 - alpha) * self.last_q_cmd_smoothed
+            self.last_q_cmd_smoothed = q_cmd_smooth.copy()
 
-                self.log_obs_csv(obs, action_model, q_cmd)
-                self.pub.publish(self.command_to_joint_state(q_cmd))
+            # if action_mode == "delta":
+            #     q_cmd = (action_scale * action_ctrl) + q0
+            # elif action_mode == "absolute":
+            #     q_cmd = action_ctrl
 
-            except Exception as exc:
-                pass
+            self.log_obs_csv(obs, action_model, q_cmd_smooth)
+            self.pub.publish(self.command_to_joint_state(q_cmd_smooth))
+
             rate.sleep()
 
 

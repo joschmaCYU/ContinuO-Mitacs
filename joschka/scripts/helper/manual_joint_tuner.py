@@ -31,8 +31,28 @@ class SingleJointTuner:
             "HR_AFE",
         ]
 
-        # État par défaut : tout à zéro
-        self.targets = {name: 0.0 for name in self.joint_names}
+        self.model_q0 = rospy.get_param(
+            "~model_q0",
+            {
+                "FL_HAA": 0.0,
+                "FR_HAA": 0.0,
+                "HL_HAA": 0.0,
+                "HR_HAA": 0.0,
+                "FL_HFE": 0.4102,
+                "FR_HFE": 0.4102,
+                "HL_HFE": -0.6981,
+                "HR_HFE": -0.6981,
+                "FL_KFE": -1.2716,
+                "FR_KFE": -1.2716,
+                "HL_KFE": 1.676,
+                "HR_KFE": 1.676,
+                "HL_AFE": -1.7219,
+                "HR_AFE": -1.7219,
+            },
+        )
+
+        # État par défaut : Posture de repos (q0)
+        self.targets = {name: self.model_q0.get(name, 0.0) for name in self.joint_names}
 
         # Paramètres pour le générateur de mouvement (sinusoïde)
         self.active_sine_joint = None
@@ -61,8 +81,9 @@ class SingleJointTuner:
 
                 for jn in self.joint_names:
                     if jn == self.active_sine_joint:
-                        # Génère l'onde sur l'articulation active
-                        val = self.sine_amp * math.sin(
+                        # Génère l'onde sur l'articulation active, CENTRÉE SUR q0
+                        base_q0 = self.model_q0.get(jn, 0.0)
+                        val = base_q0 + self.sine_amp * math.sin(
                             2.0 * math.pi * self.sine_freq * t
                         )
                         current_targets.append(val)
@@ -83,10 +104,14 @@ class SingleJointTuner:
             "  set <articulation> <valeur>   : Fixe une cible statique (ex: set FL_HFE 0.5)"
         )
         print(
-            "  sine <articulation> <amp> <f> : Mouvement sinusoïdal (ex: sine FL_KFE 0.5 1.0)"
+            "  sine <articulation> <amp> <f> : Mouvement sinusoïdal autour de q0 (ex: sine FL_KFE 0.5 1.0)"
         )
-        print("  zero                          : Remet tous les moteurs à 0.0")
-        print("  stop                          : Arrête l'onde sinusoïdale")
+        print(
+            "  zero                          : Remet tous les moteurs à leur position de repos q0"
+        )
+        print(
+            "  stop                          : Arrête l'onde sinusoïdale et retourne à q0"
+        )
         print("  quit                          : Quitter le programme")
         print("=" * 40)
 
@@ -105,16 +130,21 @@ class SingleJointTuner:
 
                 elif cmd == "zero":
                     with self.lock:
-                        self.targets = {name: 0.0 for name in self.joint_names}
+                        self.targets = {
+                            name: self.model_q0.get(name, 0.0)
+                            for name in self.joint_names
+                        }
                         self.active_sine_joint = None
-                    print("Toutes les articulations remises à 0.0.")
+                    print("Toutes les articulations remises à q0 (Posture de repos).")
 
                 elif cmd == "stop":
                     with self.lock:
                         if self.active_sine_joint:
-                            self.targets[self.active_sine_joint] = 0.0
+                            self.targets[self.active_sine_joint] = self.model_q0.get(
+                                self.active_sine_joint, 0.0
+                            )
                             self.active_sine_joint = None
-                    print("Mouvement arrêté et retour à 0.0.")
+                    print("Mouvement arrêté et retour à la position q0.")
 
                 elif cmd == "set":
                     if len(cmd_line) != 3:
@@ -150,7 +180,9 @@ class SingleJointTuner:
                             self.active_sine_joint = jn
                             self.sine_amp = amp_f
                             self.sine_freq = freq_f
-                        print(f"[{jn}] -> Sinusoïde Amp={amp_f} Freq={freq_f}Hz")
+                        print(
+                            f"[{jn}] -> Sinusoïde Amp={amp_f} Freq={freq_f}Hz autour de q0"
+                        )
                     except ValueError:
                         print(
                             "Erreur: amplitude et fréquence doivent être des nombres."
