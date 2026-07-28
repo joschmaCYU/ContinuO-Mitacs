@@ -7,7 +7,6 @@
 
 
 policies:
-
   # Climb policy configuration
   climb:
     model_path: policies/climb_final-climb.onnx
@@ -67,42 +66,6 @@ policies:
     action_scale: 0.5
     height_scan_dim: 187
 
-  # Flat policy configuration
-  flat:
-    model_path: policies/flat_pushing_pt2.onnx
-    model_format: onnx
-    obs_terms:
-      - base_lin_vel
-      - base_ang_vel
-      - projected_gravity
-      - pose_commands
-      - joint_pos
-      - joint_vel
-      - actions
-      - time_remaining_s
-    obs_dim: 56
-    action_mode: delta
-    action_scale: 0.5
-
-  # Gap policy configuration
-  gap:
-    model_path: policies/gap_final-gap-2.onnx
-    model_format: onnx
-    obs_terms:
-      - base_lin_vel
-      - base_ang_vel
-      - projected_gravity
-      - pose_commands
-      - joint_pos
-      - joint_vel
-      - actions
-      - height_scan
-      - time_remaining_s
-    obs_dim: 397
-    action_mode: delta
-    action_scale: 0.5
-    height_scan_dim: 341
-
   # Narrow policy configuration
   narrow:
     model_path: policies/narrow-full-success.onnx
@@ -121,6 +84,25 @@ policies:
     action_mode: delta
     action_scale: 0.5
     height_scan_dim: 187
+
+    # Gap policy configuration
+  gap:
+    model_path: policies/gap_final-gap-2.onnx
+    model_format: onnx
+    obs_terms:
+      - base_lin_vel
+      - base_ang_vel
+      - projected_gravity
+      - pose_commands
+      - joint_pos
+      - joint_vel
+      - actions
+      - height_scan
+      - time_remaining_s
+    obs_dim: 397
+    action_mode: delta
+    action_scale: 0.5
+    height_scan_dim: 341
 
   # Rough policy configuration
   rough:
@@ -141,3 +123,19 @@ policies:
     action_scale: 0.5
     height_scan_dim: 187
 
+  # Flat policy configuration
+  flat:
+    model_path: policies/flat_pushing_pt2.onnx
+    model_format: onnx
+    obs_terms:
+      - base_lin_vel
+      - base_ang_vel
+      - projected_gravity
+      - pose_commands
+      - joint_pos
+      - joint_vel
+      - actions
+      - time_remaining_s
+    obs_dim: 56
+    action_mode: delta
+    action_scale: 0.5

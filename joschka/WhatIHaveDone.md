@@ -215,3 +215,6 @@ I saved a lot of performance (150% to 15%) for policy_node.py by :
 1) Putting onnx on a single thread
 2) Adding throttle_model_states in gazebo.launch
 **This makes the robot walk**
+
+The lidar doesn't goes to the policy I need to fix that. Fixed switch to type: laser in `elevation_mapper.yaml`. But I need to stil test it with the robot in the air.
+The /lidar data is not right the /ouster is good and I can't figure out if /elevation_mapping/elevation_map is good or not but I think there is a problem there.

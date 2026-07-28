@@ -9,10 +9,6 @@ Date of creation : 28/06/2026
 Version : 1.0 (Restored Original)
 """
 
-# ---------------------------
-# IMPORTS
-# ---------------------------
-
 import os
 import numpy as np
 import rospy
@@ -59,14 +55,8 @@ def quat_to_rot(qw, qx, qy, qz):
 
 
 def resolve_model_path(path_param):
-    if path_param:
-        if os.path.isabs(path_param):
-            return path_param
-        pkg = rospkg.RosPack().get_path("f_quadruped_control")
-        return os.path.join(pkg, path_param)
     pkg = rospkg.RosPack().get_path("f_quadruped_control")
-    # return os.path.join(pkg, "policies", "policy_flat_pushing_pt2.onnx")
-    return os.path.join(pkg, "policies", "rough_fixed-slope-2.onnx")
+    return os.path.join(pkg, path_param)
 
 
 class PolicyNodeReal:
@@ -165,14 +155,14 @@ class PolicyNodeReal:
         self.active_policy = None
 
         self.load_policies_config()
-        self.switch_policy(rospy.get_param("~initial_policy_name", "flat"))
+        self.switch_policy(rospy.get_param("~initial_policy_name", "rough"))
 
         self.imu_acc_buffer = []
         self.imu_time_buffer = []
         self.imu_est_lin_vel = np.zeros(3, dtype=np.float32)
 
         # ---------------------------
-        # POLICY CSV
+        # CSV
         # ---------------------------
         self.export_obs_csv = rospy.get_param("~export_obs_csv", True)
 
@@ -253,11 +243,8 @@ class PolicyNodeReal:
 
     def cb_lidar(self, msg):
         ranges = np.asarray(msg.data, dtype=np.float32)
-        ranges = np.zeros(len(msg.data), dtype=np.float32)
         if ranges.size == 0:
             return
-
-        ranges[~np.isfinite(ranges)] = 0.0
 
         with self.policy_lock:
             active_policy_id = self.active_policy_id

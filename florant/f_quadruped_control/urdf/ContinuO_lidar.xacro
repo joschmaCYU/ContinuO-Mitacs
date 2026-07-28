@@ -3,13 +3,13 @@
 
   <!-- To make the robot fly -->
   <!-- Wingardium leviossssssssssssssssssa -->
-  <!-- <link name="world" /> -->
-  <!---->
-  <!-- <joint name="fixed_to_world" type="fixed"> -->
-  <!--   <parent link="world" /> -->
-  <!--   <child link="base_link" /> -->
-  <!--   <origin xyz="0 0 0.5" rpy="0 0 0" /> -->
-  <!-- </joint> -->
+  <link name="world" />
+
+  <joint name="fixed_to_world" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0 0.5" rpy="0 0 0" />
+  </joint>
 
   <!-- INCLUSIONS -->
   <xacro:include filename="$(find f_quadruped_control)/urdf/materials.xacro" />

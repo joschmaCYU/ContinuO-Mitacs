@@ -12,7 +12,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FL_SHOULDER.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FL_SHOULDER.dae" />
       </geometry>
       <material name="black" />
     </visual>
@@ -42,7 +42,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FL_UPPER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FL_UPPER_LEG.dae" />
       </geometry>
       <material name="black2" />
     </visual>
@@ -72,7 +72,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FL_LOWER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FL_LOWER_LEG.dae" />
       </geometry>
       <material name="black3" />
     </visual>
@@ -102,7 +102,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FL_FOOT.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FL_FOOT.dae" />
       </geometry>
       <material name="red" />
     </visual>
@@ -130,7 +130,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FR_SHOULDER.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FR_SHOULDER.dae" />
       </geometry>
       <material name="black" />
     </visual>
@@ -160,7 +160,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FR_UPPER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FR_UPPER_LEG.dae" />
       </geometry>
       <material name="black2" />
     </visual>
@@ -190,7 +190,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FR_LOWER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FR_LOWER_LEG.dae" />
       </geometry>
       <material name="black3" />
     </visual>
@@ -220,7 +220,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/FR_FOOT.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/FR_FOOT.dae" />
       </geometry>
       <material name="red" />
     </visual>
@@ -248,7 +248,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HL_SHOULDER.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HL_SHOULDER.dae" />
       </geometry>
       <material name="black" />
     </visual>
@@ -278,7 +278,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HL_UPPER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HL_UPPER_LEG.dae" />
       </geometry>
       <material name="black1" />
     </visual>
@@ -308,7 +308,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HL_LOWER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HL_LOWER_LEG.dae" />
       </geometry>
       <material name="black2" />
     </visual>
@@ -338,7 +338,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HL_SHANK.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HL_SHANK.dae" />
       </geometry>
       <material name="black3" />
     </visual>
@@ -368,7 +368,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HL_FOOT.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HL_FOOT.dae" />
       </geometry>
       <material name="red" />
     </visual>
@@ -396,7 +396,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HR_SHOULDER.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HR_SHOULDER.dae" />
       </geometry>
       <material name="black" />
     </visual>
@@ -426,7 +426,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HR_UPPER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HR_UPPER_LEG.dae" />
       </geometry>
       <material name="black1" />
     </visual>
@@ -456,7 +456,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HR_LOWER_LEG.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HR_LOWER_LEG.dae" />
       </geometry>
       <material name="black2" />
     </visual>
@@ -486,7 +486,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HR_SHANK.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HR_SHANK.dae" />
       </geometry>
       <material name="black3" />
     </visual>
@@ -516,7 +516,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://quadruped_description/meshes/HR_FOOT.dae" />
+        <mesh filename="package://f_quadruped_control/meshes/HR_FOOT.dae" />
       </geometry>
       <material name="red" />
     </visual>

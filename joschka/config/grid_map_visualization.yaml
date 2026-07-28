@@ -1,4 +1,3 @@
-# Le topic généré par elevation_mapping
 grid_map_topic: /elevation_mapping/elevation_map
 
 # Paramètres d'affichage pour RViz
