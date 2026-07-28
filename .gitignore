@@ -47,5 +47,8 @@ qtcreator-*
 # Emacs
 .#*
 
+# My logs
+florant/f_quadruped_control/log
+
 # Catkin custom files
 CATKIN_IGNORE
