@@ -6,16 +6,21 @@
     <inertial>
       <origin xyz="0.051772 0.021258 -0.000161" rpy="0 0 0" />
       <mass value="1.276" />
-      <inertia ixx="0.001862" ixy="0.000034" ixz="0.000001" iyy="0.001745" iyz="0.000000" izz="0.001887" />
+      <inertia ixx="0.001862" ixy="0.000034" ixz="0.000001" iyy="0.001745" iyz="0.000000"
+        izz="0.001887" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FL_SHOULDER.dae" /></geometry>
-      <material name="black"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FL_SHOULDER.dae" />
+      </geometry>
+      <material name="black" />
     </visual>
     <collision>
       <origin xyz="0.054 0 0" rpy="0 0 0" />
-      <geometry><box size="0.1 0.1 0.1" /></geometry>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
     </collision>
   </link>
   <joint name="FL_HAA" type="revolute">
@@ -24,23 +29,28 @@
     <child link="FL_SHOULDER" />
     <axis xyz="1 0 0" />
     <dynamics damping="0.7" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="FL_UPPER_LEG">
     <inertial>
       <origin xyz="0.000009 0.025634 -0.165001" rpy="0 0 0" />
       <mass value="1.367" />
-      <inertia ixx="0.016273" ixy="-0.000000" ixz="0.000012" iyy="0.016691" iyz="0.000130" izz="0.001167" />
+      <inertia ixx="0.016273" ixy="-0.000000" ixz="0.000012" iyy="0.016691" iyz="0.000130"
+        izz="0.001167" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FL_UPPER_LEG.dae" /></geometry>
-      <material name="black2"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FL_UPPER_LEG.dae" />
+      </geometry>
+      <material name="black2" />
     </visual>
     <collision>
       <origin xyz="0 0.032 -0.1232" rpy="0 0 0" />
-      <geometry><box size="0.1 0.05 0.3" /></geometry>
+      <geometry>
+        <box size="0.1 0.05 0.3" />
+      </geometry>
     </collision>
   </link>
   <joint name="FL_HFE" type="revolute">
@@ -49,23 +59,28 @@
     <child link="FL_UPPER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="FL_LOWER_LEG">
     <inertial>
       <origin xyz="-0.041308 0.034919 -0.047598" rpy="0 0 0" />
       <mass value="0.759" />
-      <inertia ixx="0.007966" ixy="-0.000009" ixz="0.001312" iyy="0.009247" iyz="-0.000002" izz="0.001638" />
+      <inertia ixx="0.007966" ixy="-0.000009" ixz="0.001312" iyy="0.009247" iyz="-0.000002"
+        izz="0.001638" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FL_LOWER_LEG.dae" /></geometry>
-      <material name="black3"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FL_LOWER_LEG.dae" />
+      </geometry>
+      <material name="black3" />
     </visual>
     <collision>
       <origin xyz="-0.0772 0.035 -0.09" rpy="0 0 0" />
-      <geometry><cylinder length="0.3" radius="0.02"/></geometry>
+      <geometry>
+        <cylinder length="0.3" radius="0.02" />
+      </geometry>
     </collision>
   </link>
   <joint name="FL_KFE" type="revolute">
@@ -74,23 +89,28 @@
     <child link="FL_LOWER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="FL_FOOT">
     <inertial>
       <origin xyz="0.035896 -0.000081 0.186367" rpy="0 0 0" />
       <mass value="0.01" />
-      <inertia ixx="0.007966" ixy="-0.000009" ixz="0.001312" iyy="0.009247" iyz="-0.000002" izz="0.001638" />
+      <inertia ixx="0.007966" ixy="-0.000009" ixz="0.001312" iyy="0.009247" iyz="-0.000002"
+        izz="0.001638" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FL_FOOT.dae" /></geometry>
-      <material name="red"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FL_FOOT.dae" />
+      </geometry>
+      <material name="red" />
     </visual>
     <collision>
       <origin xyz="0 0 -0.02" rpy="0 0 0" />
-      <geometry><sphere radius="0.0267" /></geometry>
+      <geometry>
+        <sphere radius="0.0267" />
+      </geometry>
     </collision>
   </link>
   <joint name="FL_FOOT_JOINT" type="fixed">
@@ -104,16 +124,21 @@
     <inertial>
       <origin xyz="0.051772 -0.021258 -0.000161" rpy="0 0 0" />
       <mass value="1.276" />
-      <inertia ixx="0.001862" ixy="-0.000034" ixz="0.000001" iyy="0.001745" iyz="-0.000000" izz="0.001887" />
+      <inertia ixx="0.001862" ixy="-0.000034" ixz="0.000001" iyy="0.001745" iyz="-0.000000"
+        izz="0.001887" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FR_SHOULDER.dae" /></geometry>
-      <material name="black"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FR_SHOULDER.dae" />
+      </geometry>
+      <material name="black" />
     </visual>
     <collision>
       <origin xyz="0.054 0 0" rpy="0 0 0" />
-      <geometry><box size="0.1 0.1 0.1" /></geometry>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
     </collision>
   </link>
   <joint name="FR_HAA" type="revolute">
@@ -122,23 +147,28 @@
     <child link="FR_SHOULDER" />
     <axis xyz="1 0 0" />
     <dynamics damping="0.7" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="FR_UPPER_LEG">
     <inertial>
       <origin xyz="0.000009 -0.025634 -0.165001" rpy="0 0 0" />
       <mass value="1.367" />
-      <inertia ixx="0.016273" ixy="0.000000" ixz="0.000012" iyy="0.016691" iyz="-0.000130" izz="0.001167" />
+      <inertia ixx="0.016273" ixy="0.000000" ixz="0.000012" iyy="0.016691" iyz="-0.000130"
+        izz="0.001167" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FR_UPPER_LEG.dae" /></geometry>
-      <material name="black2"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FR_UPPER_LEG.dae" />
+      </geometry>
+      <material name="black2" />
     </visual>
     <collision>
       <origin xyz="0 -0.028 -0.1232" rpy="0 0 0" />
-      <geometry><box size="0.1 0.05 0.3" /></geometry>
+      <geometry>
+        <box size="0.1 0.05 0.3" />
+      </geometry>
     </collision>
   </link>
   <joint name="FR_HFE" type="revolute">
@@ -147,23 +177,28 @@
     <child link="FR_UPPER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="FR_LOWER_LEG">
     <inertial>
       <origin xyz="-0.041308 -0.034919 -0.047598" rpy="0 0 0" />
       <mass value="0.759" />
-      <inertia ixx="0.007966" ixy="0.000009" ixz="0.001312" iyy="0.009247" iyz="0.000002" izz="0.001638" />
+      <inertia ixx="0.007966" ixy="0.000009" ixz="0.001312" iyy="0.009247" iyz="0.000002"
+        izz="0.001638" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FR_LOWER_LEG.dae" /></geometry>
-      <material name="black3"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FR_LOWER_LEG.dae" />
+      </geometry>
+      <material name="black3" />
     </visual>
     <collision>
       <origin xyz="-0.0772 -0.035 -0.09" rpy="0 0 0" />
-      <geometry><cylinder length="0.3" radius="0.02"/></geometry>
+      <geometry>
+        <cylinder length="0.3" radius="0.02" />
+      </geometry>
     </collision>
   </link>
   <joint name="FR_KFE" type="revolute">
@@ -172,23 +207,28 @@
     <child link="FR_LOWER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="FR_FOOT">
     <inertial>
       <origin xyz="0.035896 0.000081 0.186367" rpy="0 0 0" />
       <mass value="0.01" />
-      <inertia ixx="0.007966" ixy="0.000009" ixz="0.001312" iyy="0.009247" iyz="0.000002" izz="0.001638" />
+      <inertia ixx="0.007966" ixy="0.000009" ixz="0.001312" iyy="0.009247" iyz="0.000002"
+        izz="0.001638" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/FR_FOOT.dae" /></geometry>
-      <material name="red"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/FR_FOOT.dae" />
+      </geometry>
+      <material name="red" />
     </visual>
     <collision>
       <origin xyz="0 0 -0.02" rpy="0 0 0" />
-      <geometry><sphere radius="0.0267" /></geometry>
+      <geometry>
+        <sphere radius="0.0267" />
+      </geometry>
     </collision>
   </link>
   <joint name="FR_FOOT_JOINT" type="fixed">
@@ -202,16 +242,21 @@
     <inertial>
       <origin xyz="-0.051779 0.021258 0.000042" rpy="0 0 0" />
       <mass value="1.276" />
-      <inertia ixx="0.001862" ixy="-0.000034" ixz="-0.000000" iyy="0.001745" iyz="-0.000000" izz="0.001886" />
+      <inertia ixx="0.001862" ixy="-0.000034" ixz="-0.000000" iyy="0.001745" iyz="-0.000000"
+        izz="0.001886" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HL_SHOULDER.dae" /></geometry>
-      <material name="black"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HL_SHOULDER.dae" />
+      </geometry>
+      <material name="black" />
     </visual>
     <collision>
       <origin xyz="-0.054 0 0" rpy="0 0 0" />
-      <geometry><box size="0.1 0.1 0.1" /></geometry>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
     </collision>
   </link>
   <joint name="HL_HAA" type="revolute">
@@ -220,23 +265,28 @@
     <child link="HL_SHOULDER" />
     <axis xyz="1 0 0" />
     <dynamics damping="0.7" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="HL_UPPER_LEG">
     <inertial>
       <origin xyz="0.000003 0.025470 -0.134787" rpy="0 0 0" />
       <mass value="1.315" />
-      <inertia ixx="0.011053" ixy="-0.000000" ixz="0.000013" iyy="0.011463" iyz="0.000105" izz="0.001146" />
+      <inertia ixx="0.011053" ixy="-0.000000" ixz="0.000013" iyy="0.011463" iyz="0.000105"
+        izz="0.001146" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HL_UPPER_LEG.dae" /></geometry>
-      <material name="black1"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HL_UPPER_LEG.dae" />
+      </geometry>
+      <material name="black1" />
     </visual>
     <collision>
       <origin xyz="0 0.028 -0.1005" rpy="0 0 0" />
-      <geometry><box size="0.08 0.05 0.26" /></geometry>
+      <geometry>
+        <box size="0.08 0.05 0.26" />
+      </geometry>
     </collision>
   </link>
   <joint name="HL_HFE" type="revolute">
@@ -245,23 +295,28 @@
     <child link="HL_UPPER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="HL_LOWER_LEG">
     <inertial>
       <origin xyz="0.000005 0.041724 -0.160773" rpy="0 0 0" />
       <mass value="1.406" />
-      <inertia ixx="0.017322" ixy="-0.000000" ixz="0.000013" iyy="0.017702" iyz="-0.000074" izz="0.001218" />
+      <inertia ixx="0.017322" ixy="-0.000000" ixz="0.000013" iyy="0.017702" iyz="-0.000074"
+        izz="0.001218" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HL_LOWER_LEG.dae" /></geometry>
-      <material name="black2"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HL_LOWER_LEG.dae" />
+      </geometry>
+      <material name="black2" />
     </visual>
     <collision>
       <origin xyz="0 0.045 -0.1233" rpy="0 0 0" />
-      <geometry><box size="0.06 0.05 0.35" /></geometry>
+      <geometry>
+        <box size="0.06 0.05 0.35" />
+      </geometry>
     </collision>
   </link>
   <joint name="HL_KFE" type="revolute">
@@ -270,23 +325,28 @@
     <child link="HL_LOWER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="HL_SHANK">
     <inertial>
       <origin xyz="-0.040122 0.034916 -0.027409" rpy="0 0 0" />
       <mass value="0.734" />
-      <inertia ixx="0.003597" ixy="-0.000009" ixz="0.000762" iyy="0.004846" iyz="-0.000001" izz="0.001602" />
+      <inertia ixx="0.003597" ixy="-0.000009" ixz="0.000762" iyy="0.004846" iyz="-0.000001"
+        izz="0.001602" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HL_SHANK.dae" /></geometry>
-      <material name="black3"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HL_SHANK.dae" />
+      </geometry>
+      <material name="black3" />
     </visual>
     <collision>
       <origin xyz="-0.0772 0.035 -0.045" rpy="0 0 0" />
-      <geometry><cylinder length="0.21" radius="0.02"/></geometry>
+      <geometry>
+        <cylinder length="0.21" radius="0.02" />
+      </geometry>
     </collision>
   </link>
   <joint name="HL_AFE" type="revolute">
@@ -295,23 +355,28 @@
     <child link="HL_SHANK" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="HL_FOOT">
     <inertial>
       <origin xyz="0.037082 -0.000084 0.116555" rpy="0 0 0" />
       <mass value="0.01" />
-      <inertia ixx="0.003597" ixy="-0.000009" ixz="0.000762" iyy="0.004846" iyz="-0.000001" izz="0.001602" />
+      <inertia ixx="0.003597" ixy="-0.000009" ixz="0.000762" iyy="0.004846" iyz="-0.000001"
+        izz="0.001602" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HL_FOOT.dae" /></geometry>
-      <material name="red"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HL_FOOT.dae" />
+      </geometry>
+      <material name="red" />
     </visual>
     <collision>
       <origin xyz="0 0 -0.02" rpy="0 0 0" />
-      <geometry><sphere radius="0.0267" /></geometry>
+      <geometry>
+        <sphere radius="0.0267" />
+      </geometry>
     </collision>
   </link>
   <joint name="HL_FOOT_JOINT" type="fixed">
@@ -325,16 +390,21 @@
     <inertial>
       <origin xyz="-0.051779 -0.021258 0.000042" rpy="0 0 0" />
       <mass value="1.276" />
-      <inertia ixx="0.001862" ixy="0.000034" ixz="-0.000000" iyy="0.001745" iyz="0.000000" izz="0.001886" />
+      <inertia ixx="0.001862" ixy="0.000034" ixz="-0.000000" iyy="0.001745" iyz="0.000000"
+        izz="0.001886" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HR_SHOULDER.dae" /></geometry>
-      <material name="black"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HR_SHOULDER.dae" />
+      </geometry>
+      <material name="black" />
     </visual>
     <collision>
       <origin xyz="-0.054 0 0" rpy="0 0 0" />
-      <geometry><box size="0.1 0.1 0.1" /></geometry>
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
     </collision>
   </link>
   <joint name="HR_HAA" type="revolute">
@@ -343,23 +413,28 @@
     <child link="HR_SHOULDER" />
     <axis xyz="1 0 0" />
     <dynamics damping="0.7" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="HR_UPPER_LEG">
     <inertial>
       <origin xyz="0.000003 -0.025470 -0.134787" rpy="0 0 0" />
       <mass value="1.315" />
-      <inertia ixx="0.011053" ixy="0.000000" ixz="0.000013" iyy="0.011463" iyz="-0.000105" izz="0.001146" />
+      <inertia ixx="0.011053" ixy="0.000000" ixz="0.000013" iyy="0.011463" iyz="-0.000105"
+        izz="0.001146" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HR_UPPER_LEG.dae" /></geometry>
-      <material name="black1"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HR_UPPER_LEG.dae" />
+      </geometry>
+      <material name="black1" />
     </visual>
     <collision>
       <origin xyz="0 -0.028 -0.1005" rpy="0 0 0" />
-      <geometry><box size="0.08 0.05 0.26" /></geometry>
+      <geometry>
+        <box size="0.08 0.05 0.26" />
+      </geometry>
     </collision>
   </link>
   <joint name="HR_HFE" type="revolute">
@@ -368,23 +443,28 @@
     <child link="HR_UPPER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="85.0" velocity="16.75" />
+    <limit lower="-3.14" upper="3.14" effort="125.0" velocity="16.75" />
   </joint>
 
   <link name="HR_LOWER_LEG">
     <inertial>
       <origin xyz="-0.040122 -0.034916 -0.027409" rpy="0 0 0" />
       <mass value="1.406" />
-      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001" izz="0.001602" />
+      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001"
+        izz="0.001602" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HR_LOWER_LEG.dae" /></geometry>
-      <material name="black2"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HR_LOWER_LEG.dae" />
+      </geometry>
+      <material name="black2" />
     </visual>
     <collision>
       <origin xyz="0 -0.045 -0.1232" rpy="0 0 0" />
-      <geometry><box size="0.06 0.05 0.35" /></geometry>
+      <geometry>
+        <box size="0.06 0.05 0.35" />
+      </geometry>
     </collision>
   </link>
   <joint name="HR_KFE" type="revolute">
@@ -393,23 +473,28 @@
     <child link="HR_LOWER_LEG" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="HR_SHANK">
     <inertial>
       <origin xyz="-0.040122 -0.034916 -0.027409" rpy="0 0 0" />
       <mass value="0.734" />
-      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001" izz="0.001602" />
+      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001"
+        izz="0.001602" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HR_SHANK.dae" /></geometry>
-      <material name="black3"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HR_SHANK.dae" />
+      </geometry>
+      <material name="black3" />
     </visual>
     <collision>
       <origin xyz="-0.0772 -0.035 -0.045" rpy="0 0 0" />
-      <geometry><cylinder length="0.21" radius="0.02"/></geometry>
+      <geometry>
+        <cylinder length="0.21" radius="0.02" />
+      </geometry>
     </collision>
   </link>
   <joint name="HR_AFE" type="revolute">
@@ -418,23 +503,28 @@
     <child link="HR_SHANK" />
     <axis xyz="0 1 0" />
     <dynamics damping="0.9" friction="0.0" />
-    <limit lower="-3.14" upper="3.14" effort="80.0" velocity="23.04" />
+    <limit lower="-3.14" upper="3.14" effort="120.0" velocity="23.04" />
   </joint>
 
   <link name="HR_FOOT">
     <inertial>
       <origin xyz="0.037082 0.000084 0.116555" rpy="0 0 0" />
       <mass value="0.01" />
-      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001" izz="0.001602" />
+      <inertia ixx="0.003597" ixy="0.000009" ixz="0.000762" iyy="0.004846" iyz="0.000001"
+        izz="0.001602" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry><mesh filename="package://quadruped_description/meshes/HR_FOOT.dae" /></geometry>
-      <material name="red"/>
+      <geometry>
+        <mesh filename="package://quadruped_description/meshes/HR_FOOT.dae" />
+      </geometry>
+      <material name="red" />
     </visual>
     <collision>
       <origin xyz="0 0 -0.02" rpy="0 0 0" />
-      <geometry><sphere radius="0.0267" /></geometry>
+      <geometry>
+        <sphere radius="0.0267" />
+      </geometry>
     </collision>
   </link>
   <joint name="HR_FOOT_JOINT" type="fixed">

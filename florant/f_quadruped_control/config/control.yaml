@@ -3,48 +3,56 @@ joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 100
 
+
 # ================== PID profiles (front legs stiffer) ==================
-F_HFE: &F_HFE
-  p: 2000.0
-  i: 5.0       
-  d: 100.0
+ISAAC: &ISAAC
+  p: 50.0
+  i: 0.0       
+  d: 1.0
   i_clamp: 4.0
+
+# =====
+F_HFE: &F_HFE
+  p: 150.0
+  i: 0.0       
+  d: 6.0
+  i_clamp: 15.0
 
 F_KFE: &F_KFE
   p: 200.0
   i: 0.0
-  d: 4.0
-  i_clamp: 4.0
+  d: 6.0
+  i_clamp: 15.0
 
 H_HFE: &H_HFE
-  p: 2000.0
-  i: 5.0
-  d: 25.0
-  i_clamp: 10.0
+  p: 200.0
+  i: 0.0
+  d: 6.0
+  i_clamp: 15.0
 
 H_KFE: &H_KFE
-  p: 2000.0
-  i: 5.0
-  d: 50.0
-  i_clamp: 10.0
+  p: 200.0
+  i: 0.0
+  d: 6.0
+  i_clamp: 15.0
 
 F_HAA: &F_HAA
-  p: 800.0
-  i: 5.0
-  d: 60.0
-  i_clamp: 10.0
+  p: 200.0
+  i: 0.0
+  d: 6.0
+  i_clamp: 15.0
 
 H_HAA: &H_HAA
-  p: 1500.0
-  i: 20.0
-  d: 60.0
-  i_clamp: 30.0
+  p: 200.0
+  i: 0.0
+  d: 6.0
+  i_clamp: 15.0
 
 H_AFE: &H_AFE
   p: 150.0
   i: 0.0
-  d: 1.0
-  i_clamp: 4.0
+  d: 6.0
+  i_clamp: 15.0
 
 # ===========================================================
 

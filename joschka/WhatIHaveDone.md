@@ -185,7 +185,33 @@ I switch to florent package it's kindof working but the robot isn't walking
 Let's find why he isn't walking.
 From what I understand `gazebo_ros_control` is applying PIDs. I am retuning the PIDs for each joint. I have an RMSE very small on almost all joints around 0.01. On a static movement.
 The legs move very quickly when the robot touches the ground. I try adding a smooth value but it did not fix. So I looked at the action that the rl policy gave me and they seem good. 
-I have a big gap between target send and real position
+**I have a big gap between target position (= q0 + rl_output * scale) and real position**
 
+I need to try on isaac sim if I have the same issue. Because I know the policy is good. Mabe a gazebo issue.
 
-I need to try on isaac sim if I have the same issue. Because I know my policy is good.
+# Day 20 (27/07)
+I noticed that the robot uses so much torque to move enven in the air (see *in_air* folder and see *in_air.png*). I tested with multiple aplha values (i start my test at 3s). 
+For alpha :
+- 0.5 4 legs that hit 120nm limit.
+- 0.4 6 legs (wtf)
+- 0.3 3
+- 0.2 2
+0.2 or 0.3 seems to be good. But the robot still can't manage to go forward.
+
+I took the isaac sim configs on effort for the urdf, the velocity, the pid. But the robot still wont walk it just falls under his weight. The robot does 31.6kg (torso: 15.3; legs: 16.3). So we have 31.6*9.81=310 N. 310/4 = 77.5 N for each leg. But when walking only 2 legs need to have the weight so 155 N. The max N * m the robot has is 20 (urdf). Therefore my toque will be 20 = x * 155 <=> x = 0.13 m.
+
+But even with 120 torque the robot takes max 40 Nm (with p: 50, d: 1 as in isaac sim) so the legs moves 0.26 m approximately.
+
+There is a high chance it's the IMU that makes the rl panic.
+
+# Day 21 (28/07)
+I talked with dr alex and he said that I can be a missmatch between the frequency of the policy and the sim. But `rospy.Rate(50)` assures that what is executed in the loop (sending rl_target, policy takes it's decision, exporting to csv) is done every 50Hz and at the same time.
+
+For /joint_targets_rl I get : average rate: 50.000 min: 0.017s max: 0.023s std dev: 0.00184s window: 39
+For /{jname}_position_controller/command I get average rate: 50.086 min: 0.017s max: 0.023s std dev: 0.00181s window: 30
+So it seems to be publishing and reading at the right rate.
+
+I saved a lot of performance (150% to 15%) for policy_node.py by :
+1) Putting onnx on a single thread
+2) Adding throttle_model_states in gazebo.launch
+**This makes the robot walk**

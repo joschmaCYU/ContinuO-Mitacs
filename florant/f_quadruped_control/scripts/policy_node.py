@@ -21,7 +21,8 @@ import csv
 import yaml
 import threading
 
-from sensor_msgs.msg import Imu, JointState, LaserScan
+from gazebo_msgs.msg import ModelStates
+from sensor_msgs.msg import Imu, JointState
 from std_msgs.msg import Float32MultiArray
 from std_msgs.msg import String
 
@@ -64,7 +65,8 @@ def resolve_model_path(path_param):
         pkg = rospkg.RosPack().get_path("f_quadruped_control")
         return os.path.join(pkg, path_param)
     pkg = rospkg.RosPack().get_path("f_quadruped_control")
-    return os.path.join(pkg, "policies", "policy_flat_pushing_pt2.onnx")
+    # return os.path.join(pkg, "policies", "policy_flat_pushing_pt2.onnx")
+    return os.path.join(pkg, "policies", "rough_fixed-slope-2.onnx")
 
 
 class PolicyNodeReal:
@@ -79,6 +81,7 @@ class PolicyNodeReal:
         # PARAMETERS
         # ---------------------------
 
+        # Gets directly the acceleration of the IMU
         self.bypass_base_lin_vel_calc = rospy.get_param(
             "~bypass_base_lin_vel_calc", False
         )
@@ -135,9 +138,10 @@ class PolicyNodeReal:
             "~action_order_model", list(self.joint_order)
         )
 
+        self.latest_model_states = None
         self.latest_imu = None
         self.latest_joint_state = None
-        self.latest_cmd = np.array([0.2, 0.0, 0.0, 0.0], dtype=np.float32)
+        self.latest_cmd = np.array([0.8, 0.0, 0.0, 0.0], dtype=np.float32)
         self.latest_height_scan_raw = np.zeros(187, dtype=np.float32)
         self.latest_ceiling_height_scan_raw = np.zeros(187, dtype=np.float32)
         self.last_action_model = np.zeros(14, dtype=np.float32)
@@ -215,6 +219,9 @@ class PolicyNodeReal:
         )
         rospy.Subscriber("/lidar", Float32MultiArray, self.cb_lidar, queue_size=10)
         rospy.Subscriber("/switch_cp", String, self.cb_switch_cp, queue_size=10)
+        rospy.Subscriber(
+            "/gazebo/model_states_throttled", ModelStates, self._model_states_cb
+        )
 
         rospy.loginfo(
             "policy_node_real ready: active_policy=%s, hz=%.1f",
@@ -227,6 +234,9 @@ class PolicyNodeReal:
     # ---------------------------
     # ROS CALLBACK FUNCTIONS
     # ---------------------------
+
+    def _model_states_cb(self, msg):
+        self.latest_model_states = msg
 
     def cb_imu(self, msg):
         self.latest_imu = msg
@@ -243,6 +253,7 @@ class PolicyNodeReal:
 
     def cb_lidar(self, msg):
         ranges = np.asarray(msg.data, dtype=np.float32)
+        ranges = np.zeros(len(msg.data), dtype=np.float32)
         if ranges.size == 0:
             return
 
@@ -293,9 +304,14 @@ class PolicyNodeReal:
             cfg["model"] = None
             cfg["ort_session"] = None
 
+            # Only use 1 threads (for performance)
+            so = ort.SessionOptions()
+            so.intra_op_num_threads = 1
+            so.inter_op_num_threads = 1
             cfg["ort_session"] = ort.InferenceSession(
-                cfg["model_path"], providers=["CPUExecutionProvider"]
+                cfg["model_path"], sess_options=so, providers=["CPUExecutionProvider"]
             )
+
             if cfg["ort_input_name"] is None:
                 cfg["ort_input_name"] = cfg["ort_session"].get_inputs()[0].name
 
@@ -474,57 +490,40 @@ class PolicyNodeReal:
     # -------------------------------------------
 
     def imu_base_lin_vel(self):
-        if self.latest_imu is None:
-            return self.imu_est_lin_vel.copy()
+        # 1. Sécurité : si Gazebo n'a pas encore publié
+        if not hasattr(self, "latest_model_states") or self.latest_model_states is None:
+            return np.array([0.0, 0.0, 0.0], dtype=np.float32)
 
-        a_msg = self.latest_imu.linear_acceleration
-        if self.bypass_base_lin_vel_calc:
-            return np.array([a_msg.x, a_msg.y, a_msg.z], dtype=np.float32)
+        try:
+            # 2. Chercher l'index du robot (doit correspondre au '-model quadruped' du launch)
+            idx = self.latest_model_states.name.index("quadruped")
+        except ValueError:
+            return np.array([0.0, 0.0, 0.0], dtype=np.float32)
 
-        now = self.latest_imu.header.stamp
-        if now.to_sec() == 0.0:
-            now = rospy.Time.now()
-        acc_raw = np.array([a_msg.x, a_msg.y, a_msg.z], dtype=np.float32)
-        grav_proj = self.imu_projected_gravity()
-        # acc = acc_raw + (grav_proj * 9.81) = 9.81 + (-9.81) = 0.0
-        acc = acc_raw + grav_proj * 9.81
-
-        self.imu_time_buffer.append(now)
-        self.imu_acc_buffer.append(acc)
-
-        if len(self.imu_time_buffer) > 3:
-            self.imu_time_buffer.pop(0)
-            self.imu_acc_buffer.pop(0)
-
-        if len(self.imu_time_buffer) < 3:
-            return self.imu_est_lin_vel.copy()
-
-        t0, t1, t2 = self.imu_time_buffer
-        a0, a1, a2 = self.imu_acc_buffer
-
-        dt01, dt12, dt_total = (
-            (t1 - t0).to_sec(),
-            (t2 - t1).to_sec(),
-            (t2 - t0).to_sec(),
+        # 3. Récupérer la vitesse linéaire absolue (World Frame)
+        twist = self.latest_model_states.twist[idx]
+        v_world = np.array(
+            [twist.linear.x, twist.linear.y, twist.linear.z], dtype=np.float32
         )
 
-        if dt01 <= 0.0 or dt12 <= 0.0 or dt_total <= 0.0 or dt_total > 0.2:
-            self.imu_time_buffer, self.imu_acc_buffer = [now], [acc]
-            return self.imu_est_lin_vel.copy()
+        # 4. Récupérer l'orientation absolue pour transformer la vitesse
+        pose = self.latest_model_states.pose[idx]
+        q = pose.orientation
 
-        ratio = dt01 / dt12
-        if ratio < 0.5 or ratio > 2.0:
-            self.imu_time_buffer, self.imu_acc_buffer = (
-                [self.imu_time_buffer[-1]],
-                [self.imu_acc_buffer[-1]],
-            )
-            return self.imu_est_lin_vel.copy()
+        # 5. Conversion du quaternion en matrice de rotation R (Local -> World)
+        x, y, z, w = q.x, q.y, q.z, q.w
+        R = np.array(
+            [
+                [1 - 2 * (y**2 + z**2), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+                [2 * (x * y + z * w), 1 - 2 * (x**2 + z**2), 2 * (y * z - x * w)],
+                [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x**2 + y**2)],
+            ]
+        )
 
-        self.imu_est_lin_vel += (dt_total / 6.0) * (a0 + 4.0 * a1 + a2)
-        self.imu_est_lin_vel *= np.exp(-dt_total / 2.0)
-        self.imu_time_buffer, self.imu_acc_buffer = [t2], [a2]
+        # 6. Vitesse dans le repère Local du robot = Transposée de R multipliée par V_world
+        v_local = R.T.dot(v_world)
 
-        return self.imu_est_lin_vel.copy()
+        return v_local.astype(np.float32)
 
     def imu_base_ang_vel(self):
         if self.latest_imu is None:
@@ -615,7 +614,7 @@ class PolicyNodeReal:
                 obs = self.build_obs()
 
                 if not self.obs_ready(obs):
-                    rate.sleep()
+                    rospy.sleep(0.1)
                     continue
 
                 if not self.policy_started:
@@ -632,7 +631,7 @@ class PolicyNodeReal:
 
             action_ctrl = self.map_model_action_to_control(action_model)
             q_cmd_raw = (action_scale * action_ctrl) + q0
-            alpha = 0.5
+            alpha = 0.9
             q_cmd_smooth = alpha * q_cmd_raw + (1.0 - alpha) * self.last_q_cmd_smoothed
             self.last_q_cmd_smoothed = q_cmd_smooth.copy()
 

@@ -1,5 +1,6 @@
 <launch>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find f_quadruped_control)/worlds/fast_physics.world" />
     <arg name="paused" value="true" />
     <arg name="use_sim_time" value="true" />
     <arg name="gui" value="true" />
@@ -7,9 +8,11 @@
     <arg name="debug" value="false" />
   </include>
 
-
   <param name="robot_description"
     command="$(find xacro)/xacro '$(find f_quadruped_control)/urdf/ContinuO_lidar.xacro'" />
+
+  <node name="throttle_model_states" pkg="topic_tools" type="throttle"
+    args="messages /gazebo/model_states 50 /gazebo/model_states_throttled" />
 
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
