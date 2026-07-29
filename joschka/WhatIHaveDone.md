@@ -218,3 +218,7 @@ I saved a lot of performance (150% to 15%) for policy_node.py by :
 
 The lidar doesn't goes to the policy I need to fix that. Fixed switch to type: laser in `elevation_mapper.yaml`. But I need to stil test it with the robot in the air.
 The /lidar data is not right the /ouster is good and I can't figure out if /elevation_mapping/elevation_map is good or not but I think there is a problem there.
+
+# Day 22 (29/07)
+I found the problem: the points are good but they are kept in memory even if the object isn't there. Because to update there needs to be an object behind the deleted object for the deleted object to disapear. 
+**So I had to put the lidar pointing to the ground.**

@@ -604,10 +604,6 @@ class PolicyNodeReal:
                     rospy.sleep(0.1)
                     continue
 
-                if not self.policy_started:
-                    self.episode_start = rospy.Time.now()
-                    self.policy_started = True
-
                 obs = self.inject_time_remaining(obs)
                 action_model = self.run_policy(obs)
                 self.last_action_model = action_model.copy()
