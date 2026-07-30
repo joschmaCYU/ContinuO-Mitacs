@@ -354,7 +354,7 @@ class PolicyNodeReal:
             "projected_gravity": self.imu_projected_gravity(),
             "pose_commands": self.latest_cmd,
             "joint_pos": q - self.base_vector(),  # q - q0
-            "joint_vel": dq * 0.05,
+            "joint_vel": dq,
             "actions": self.last_action_model,
             "height_scan": height_scan,
             "ceiling_height_scan": ceiling_height_scan,
