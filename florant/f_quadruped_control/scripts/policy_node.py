@@ -131,7 +131,7 @@ class PolicyNodeReal:
         self.latest_model_states = None
         self.latest_imu = None
         self.latest_joint_state = None
-        self.latest_cmd = np.array([0.8, 0.0, 0.0, 0.0], dtype=np.float32)
+        self.latest_cmd = np.array([0.2, 0.0, 0.0, 0.0], dtype=np.float32)  # speed
         self.latest_height_scan_raw = np.zeros(187, dtype=np.float32)
         self.latest_ceiling_height_scan_raw = np.zeros(187, dtype=np.float32)
         self.last_action_model = np.zeros(14, dtype=np.float32)
@@ -155,7 +155,7 @@ class PolicyNodeReal:
         self.active_policy = None
 
         self.load_policies_config()
-        self.switch_policy(rospy.get_param("~initial_policy_name", "rough"))
+        self.switch_policy(rospy.get_param("~initial_policy_name", "flat"))
 
         self.imu_acc_buffer = []
         self.imu_time_buffer = []
@@ -353,8 +353,8 @@ class PolicyNodeReal:
             "base_ang_vel": self.imu_base_ang_vel(),
             "projected_gravity": self.imu_projected_gravity(),
             "pose_commands": self.latest_cmd,
-            "joint_pos": q,
-            "joint_vel": dq,
+            "joint_pos": q - self.base_vector(),  # q - q0
+            "joint_vel": dq * 0.05,
             "actions": self.last_action_model,
             "height_scan": height_scan,
             "ceiling_height_scan": ceiling_height_scan,
@@ -604,6 +604,9 @@ class PolicyNodeReal:
                     rospy.sleep(0.1)
                     continue
 
+                if self.episode_start is None:
+                    self.episode_start = rospy.Time.now()
+
                 obs = self.inject_time_remaining(obs)
                 action_model = self.run_policy(obs)
                 self.last_action_model = action_model.copy()
@@ -614,7 +617,7 @@ class PolicyNodeReal:
 
             action_ctrl = self.map_model_action_to_control(action_model)
             q_cmd_raw = (action_scale * action_ctrl) + q0
-            alpha = 0.9
+            alpha = 0.6
             q_cmd_smooth = alpha * q_cmd_raw + (1.0 - alpha) * self.last_q_cmd_smoothed
             self.last_q_cmd_smoothed = q_cmd_smooth.copy()
 

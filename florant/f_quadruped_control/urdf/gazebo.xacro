@@ -33,13 +33,13 @@
       <ray>
         <scan>
           <horizontal>
-            <samples>512</samples>
+            <samples>128</samples> <!-- If you have performance issues reduce this -->
             <resolution>1</resolution>
             <min_angle>-1.5708</min_angle>
             <max_angle>1.5708</max_angle>
           </horizontal>
           <vertical>
-            <samples>64</samples>
+            <samples>16</samples> <!-- If you have performance issues reduce this -->
             <resolution>1</resolution>
             <min_angle>-0.785398</min_angle>
             <max_angle>0.785398</max_angle>
@@ -61,7 +61,7 @@
         <frameName>os_sensor</frameName>
         <organize_cloud>false</organize_cloud>
         <min_range>0.1</min_range>
-        <max_range>100.0</max_range>
+        <max_range>25.0</max_range>
         <gaussianNoise>0.01</gaussianNoise>
       </plugin>
     </sensor>

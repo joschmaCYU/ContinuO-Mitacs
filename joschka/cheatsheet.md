@@ -1,4 +1,5 @@
 # Docker
+docker build -t ros_ouster_sync .
 docker run -it --net=host --ipc=host --env="DISPLAY=$DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" -v /dev:/dev --privileged -v /home/josch/Projects/Mitacs:/root/catkin_ws/src/mitacs --name ros_ouster_sync ros_ouster_sync bash
 ## Start
 xhost +local:root

@@ -3,7 +3,7 @@ FROM osrf/ros:noetic-desktop-full
 
 # 1. Mise à jour et installation des outils système
 RUN apt-get update && apt-get install -y \
-    nvim \
+    neovim \
     python3-pip \
     nano \
     usbutils \
@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
 
 # 2. Installation des librairies Python requises
 RUN pip3 install --no-cache-dir \
+    onnxruntime \
     numpy \
     pandas \
     pyserial

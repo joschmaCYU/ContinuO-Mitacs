@@ -222,3 +222,10 @@ The /lidar data is not right the /ouster is good and I can't figure out if /elev
 # Day 22 (29/07)
 I found the problem: the points are good but they are kept in memory even if the object isn't there. Because to update there needs to be an object behind the deleted object for the deleted object to disapear. 
 **So I had to put the lidar pointing to the ground.**
+I made the real time factor much better (the performance of the sim) by lowering the lidar quality.
+I installed my sim on the ContinuO pc.
+
+# Day 23 (30/07)
+I am tuning pid for the legs of the robot for them to not vibrate.
+In isaac sim the robot legs take time to move where it wants so it takes long steps. In my sim the legs vibrate very quickly.
+I forgot to put q - q0 in joint_pos
