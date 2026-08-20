@@ -48,7 +48,7 @@ qtcreator-*
 .#*
 
 # My logs
-florant/f_quadruped_control/log
+Continuo/florant/f_quadruped_control/log
 
 # Catkin custom files
 CATKIN_IGNORE
