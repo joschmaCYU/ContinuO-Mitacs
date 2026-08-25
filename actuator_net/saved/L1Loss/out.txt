@@ -1,0 +1,22 @@
+ RÉSULTATS SCIENTIFIQUES POUR RMD_X8_PRO_H_V3_1to6 :
+   - RMSE : 1.763 Ampères
+   - MAE  : 1.306 Ampères
+   - R²   : 0.607
+
+🔬 TEST DE RÉFÉRENCE (BASELINE PD) POUR RMD_X8_PRO_H_V3_1to6
+RMSE du Profil Initial (ISAAC) / Réel (CAN) (Kp=50.0, Kd=1.0) : 6.238 Ampères
+   -> L'Actuator Net est 3.5x plus précis que l'équation mathématique !
+RMSE du Profil Ajusté (GAZEBO) (Kp=120.0, Kd=3.0) : 8.703 Ampères
+   -> L'Actuator Net est 4.9x plus précis que l'équation mathématique !
+
+📊 RÉSULTATS SCIENTIFIQUES POUR RMD_X8_PRO_V2_1to9 :
+   - RMSE : 1.722 Ampères
+   - MAE  : 1.327 Ampères
+   - R²   : 0.679
+
+🔬 TEST DE RÉFÉRENCE (BASELINE PD) POUR RMD_X8_PRO_V2_1to9
+RMSE du Profil Initial (ISAAC) / Réel (CAN) (Kp=50.0, Kd=1.0) : 11.810 Ampères
+   -> L'Actuator Net est 6.9x plus précis que l'équation mathématique !
+RMSE du Profil Ajusté (GAZEBO) (Kp=120.0, Kd=3.0) : 13.249 Ampères
+   -> L'Actuator Net est 7.7x plus précis que l'équation mathématique !
+
