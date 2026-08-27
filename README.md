@@ -25,8 +25,7 @@ This project (developed as part of a MITACS research internship at the Universit
     - Joint PID tuning tools (manual_joint_tuner.py, stance_tuner.py), policy replay scripts, 2D ONNX
       simulators, and noise analyzers.
 
-  ──────
-  #### 3. florant — ROS Control Stack (Simulation & Real Robot)
+#### 3. florant — ROS Control Stack (Simulation & Real Robot)
   - f_quadruped_control:
     - Core controller (policy_node.py) running ONNX models in real-time at 50 Hz.
     - Dynamic policy switcher node (quadruped_switch_policy_node.py).
