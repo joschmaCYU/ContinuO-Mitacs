@@ -412,3 +412,8 @@ Doing the report paper
 Report
 
 # Day 39 (25/08)
+Report
+
+# Day 40 (26/08)
+Report. retraining of rough policy. teacher student on onnx
+
