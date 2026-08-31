@@ -1,4 +1,8 @@
 # Yma-Mitacs-Global-Link-UCalgary
+<p align="center">
+  <img width="563" height="540" alt="ContinuO" src="https://github.com/user-attachments/assets/30879ef1-416f-49a3-972a-24d325f776e6" />
+</p>
+
 **[User manual](https://github.com/joschmaCYU/ContinuO-Mitacs/blob/main/USER_MANUAL.md)**
   
 ### Context & Global Objective
